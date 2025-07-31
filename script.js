@@ -9,6 +9,8 @@ let apuestas = [];
 let bazas = [];
 let historial = [];
 
+let forzarProhibido = true;
+
 const btnSiguiente = document.getElementById("siguiente-nombres");
 const nombresContainer = document.getElementById("nombres-container");
 const formNombres = document.getElementById("form-nombres");
@@ -31,6 +33,12 @@ const faseBazas = document.getElementById("fase-bazas");
 const jugadorBazas = document.getElementById("jugador-bazas");
 const selectBaza = document.getElementById("select-baza");
 const btnConfirmarBaza = document.getElementById("confirmar-baza");
+
+
+
+document.getElementById("switch-obligar").addEventListener("change", function () {
+  forzarProhibido = this.checked;
+});
 
 btnSiguiente.onclick = () => {
   numJugadores = parseInt(document.getElementById("num-jugadores").value);
@@ -150,7 +158,7 @@ function mostrarFormularioApuestas(inicio, cartasRonda) {
     // Actualizamos opciones del último select
     for (const option of ultimoSelect.options) {
       const val = parseInt(option.value);
-      if (val === apuestaProhibida && apuestaProhibida >= 0 && apuestaProhibida <= cartasRonda) {
+      if (forzarProhibido && val === apuestaProhibida && apuestaProhibida >= 0 && apuestaProhibida <= cartasRonda) {
         option.disabled = true;
         option.textContent = `${val} (Prohibido)`;
         option.style.backgroundColor = "#ff9999";
@@ -190,15 +198,16 @@ function mostrarFormularioApuestas(inicio, cartasRonda) {
       total += val;
     }
 
-    if (total === totalBazas) {
-      alert(`La suma total de apuestas no puede ser igual a ${totalBazas}. Cambia la apuesta del último jugador.`);
-      return;
-    }
+    // if (total === totalBazas) {
+    //   alert(`La suma total de apuestas no puede ser igual a ${totalBazas}. Cambia la apuesta del último jugador.`);
+    //   return;
+    // }
 
     faseApuestas.classList.add("hidden");
     mostrarFormularioBazas(inicio, cartasRonda);
   };
 }
+
 
 
 function mostrarFormularioBazas(inicio, cartasRonda) {
